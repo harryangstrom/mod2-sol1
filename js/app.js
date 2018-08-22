@@ -38,9 +38,19 @@ function AlreadyBoughtController(ShoppingListCheckOffService) {
     boughtList.items = ShoppingListCheckOffService.getItemsBought();
 
     boughtList.message = function () {
+        // return (boughtList.items=="");
+        if (boughtList.items=="") {
+            return ("Nothing bought yet!");
+        }
+    };
+
+    boughtList.empty = function () {
         return (boughtList.items=="");
     };
 
+    boughtList.releaseItem = function (itemIndex) {
+        ShoppingListCheckOffService.releaseItem(itemIndex);
+    };
 }
 
 function ShoppingListCheckOffService() {
@@ -74,16 +84,18 @@ function ShoppingListCheckOffService() {
         if (initialItems.length == 0) throw new Error("Everything is bought!");
     };
 
-    service.getItemsBought = function () {
-        console.log("initialItems2: ", initialItems);
-        console.log("boughtItems2: ", boughtItems);
-        if (true) {
-            return boughtItems;
-        }
+     service.getItemsBought = function () {
+        return boughtItems;
+     }; 
 
+    service.releaseItem = function(index) {
+        var itemReleased = {
+            name: boughtItems[index].name,
+            quantity: boughtItems[index].quantity
+        };
+        initialItems.push(itemReleased);
+        boughtItems.splice(index, 1);
     };
-
-    
 
 
 
