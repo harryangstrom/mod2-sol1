@@ -13,14 +13,28 @@ function ToBuyController(ShoppingListCheckOffService) {
     buyList.items = ShoppingListCheckOffService.getItemsToBuy();
 
 
-    buyList.buyItem = function (itemIndex) {
+/*     buyList.buyItem = function (itemIndex) {
         try {
             ShoppingListCheckOffService.buyItem(itemIndex);
         } catch (error) {
             buyList.errorMessage = error.message;
         }
+    }; */
+
+    buyList.buyItem = function (itemIndex) {
+        ShoppingListCheckOffService.buyItem(itemIndex);
     };
 
+    buyList.message = function () {
+        if (buyList.items=="") {
+            return ("Everything is bought!");
+        }
+    };
+
+    buyList.empty = function() {
+        return (buyList.items=="");
+    };
+    
 }
 
 AlreadyBoughtController.$inject = ['ShoppingListCheckOffService'];
@@ -63,6 +77,7 @@ function ShoppingListCheckOffService() {
         { name: "usb stick", quantity: 2},
         { name: "earphones", quantity: 1},
         { name: "joystick", quantity: 5},
+        { name: "speakers", quantity: 18}
     ];
 
     var boughtItems = [];
@@ -79,9 +94,10 @@ function ShoppingListCheckOffService() {
         };
         boughtItems.push(itemBought) ;
         initialItems.splice(index, 1);
+        boughtItems = boughtItems.sort(compara);
         console.log("initialItems: ", initialItems);
         console.log("boughtItems: ", boughtItems);
-        if (initialItems.length == 0) throw new Error("Everything is bought!");
+        // if (initialItems.length == 0) throw new Error("Everything is bought!");
     };
 
      service.getItemsBought = function () {
@@ -94,8 +110,15 @@ function ShoppingListCheckOffService() {
             quantity: boughtItems[index].quantity
         };
         initialItems.push(itemReleased);
+        initialItems = initialItems.sort(compara);
         boughtItems.splice(index, 1);
     };
+
+    function compara (a, b) {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+    }
 
 
 

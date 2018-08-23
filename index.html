@@ -21,7 +21,8 @@
        <li ng-repeat="item in buyList.items">Buy {{item.quantity}} {{item.name}}<button class="btn btn-default" 
         ng-click="buyList.buyItem($index);"><span class="glyphicon glyphicon-ok"></span> Bought</button></li>
      </ul>
-     <div class="emptyMessage" ng-if="buyList.errorMessage">{{buyList.errorMessage}}</div>
+     <!-- <div class="emptyMessage" ng-if="buyList.errorMessage">{{buyList.errorMessage}}</div> -->
+     <div class="emptyMessage" ng-hide="!buyList.empty()">{{buyList.message()}}</div>
     </div>
 
     <!-- Already Bought List -->
